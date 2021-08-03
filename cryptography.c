@@ -40,7 +40,6 @@ void run_cryptographic_algo(char* technique_name, void (*encryption_fptr)(char*,
 
 //Runs cryptographic algorithm for given algo code(defined in header file)
 void run_cryptographic_algo_for(int algo_code){
-	printf("%d", algo_code);
 	switch(algo_code){
 		case CAESER:
 			run_cryptographic_algo("Caser Cipher", &caeser_cipher_encrypt_text, &caeser_cipher_decrypt_text);

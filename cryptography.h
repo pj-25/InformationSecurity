@@ -1,7 +1,6 @@
 #ifndef CRYPTOGRAPHY_H
 #define CRYPTOGRAPHY_H
 
-
 #define CAESER 0
 #define MONOALPHABETIC 1
 
