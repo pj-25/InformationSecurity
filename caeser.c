@@ -1,7 +1,7 @@
 #include "cryptography.h"
 
 int main(){
-    run_cryptography_algo("Caeser Cipher", &caeser_cipher_encrypt_text, &caeser_cipher_decrypt_text);
+    run_cryptographic_algo_for(CAESER);
     return 1;
 }
 

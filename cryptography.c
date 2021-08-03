@@ -8,20 +8,24 @@ void transform_text(char transformed_text[], char text[], int key, char (*transf
     int text_length = strlen(text);    
     int i=0;
 	for(i=0;i<text_length;i++){
-        transformed_text[i] = transform_char_fptr(text[i], key);
+		short int char_code = (int)text[i];
+		if(char_code >= 65 && (char_code <= 90 || (char_code >= 97 && char_code <= 123))){
+        	transformed_text[i] = transform_char_fptr(text[i], key);
+		}else{
+			transformed_text[i] = text[i];
+		}
 	}
     transformed_text[i] = '\0';
 }
 
-/*Runs the cryptographic algorithm by applying given encryption and decryption functions on the input plain text which is scanned from the console*/
-void run_cryptography_algo(char* technique_name, void (*encryption_fptr)(char*, char*), void (*decryption_fptr)(char*, char*)){
+//Runs the cryptographic algorithm by applying given encryption and decryption functions on the input plain text which is scanned from the console
+void run_cryptographic_algo(char* technique_name, void (*encryption_fptr)(char*, char*), void (*decryption_fptr)(char*, char*)){
 	char plain_text[TEXT_MAX_LEN];
 	
 	printf("***** %s ******\n", technique_name);
 	
     printf("Enter plain text: ");
-    scanf("%s", plain_text);
-    
+    scanf("%[^\n]s", plain_text);
     char* encrypted_text = (char*)malloc(sizeof(char)*strlen(plain_text));
     encryption_fptr(encrypted_text, plain_text);
     
@@ -32,6 +36,20 @@ void run_cryptography_algo(char* technique_name, void (*encryption_fptr)(char*, 
     
     free(encrypted_text);
     free(decrypted_text);	
+}
+
+//Runs cryptographic algorithm for given algo code(defined in header file)
+void run_cryptographic_algo_for(int algo_code){
+	printf("%d", algo_code);
+	switch(algo_code){
+		case CAESER:
+			run_cryptographic_algo("Caser Cipher", &caeser_cipher_encrypt_text, &caeser_cipher_decrypt_text);
+			break;
+		case MONOALPHABETIC:
+			init_monoalphabetic_cipher();
+			run_cryptographic_algo("Monoalphabetic Cipher", &monoalphabetic_cipher_encrypt_text, &monoalphabetic_cipher_decrypt_text);
+			break;
+	}
 }
 
 
