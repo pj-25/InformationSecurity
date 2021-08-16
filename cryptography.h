@@ -3,8 +3,11 @@
 
 #define CAESER 0
 #define MONOALPHABETIC 1
+#define POLYALPHABETIC 2
+#define PLAYFAIR 3
 
-#define CHAR_SHIFT_VALUE(c) (c >= 'a') ? 97 : 65;
+#define CHAR_SHIFT_VALUE(c) (c >= 'a') ? 97 : 65
+#define CHAR_CODE(c) c - (CHAR_SHIFT_VALUE(c))
 
 void transform_text(char* transformed_text, char* text, int key, char (*fptr)(char,int));
 char encrypt_char_by_shift(char c, int k);
@@ -27,5 +30,19 @@ char monoalphabetic_cipher_encrypt_char(char c, int k);
 char monoalphabetic_cipher_decrypt_char(char c, int k);
 void monoalphabetic_cipher_encrypt_text(char* encrypted_text, char* plain_text);
 void monoalphabetic_cipher_decrypt_text(char* decrypted_text, char* encrypted_text);
+
+void init_polyalphabetic_cipher(char*);
+char polyalphabetic_cipher_encrypt_char(char c, int pos);
+char polyalphabetic_cipher_decrypt_char(char c, int pos);
+void polyalphabetic_cipher_encrypt_text(char* encrypted_text, char* plain_text);
+void polyalphabetic_cipher_decrypt_text(char* decrypted_text, char* encrypted_text);
+
+void init_playfair_cipher(char*);
+void generate_playfair_matrix(char *keyword);
+void playfair_cipher_encrypt_text(char* encrypted_text, char* plain_text);
+void playfair_cipher_decrypt_text(char* decrypted_text, char* encrypted_text);
+void clean_playfair_cipher();
+int prepare_text(char*, char*);
+void print_playfair_matrix();
 
 #endif
