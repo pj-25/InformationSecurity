@@ -51,4 +51,5 @@ void rail_fence_encrypt_text(char* encrypted_text, char* plain_text);
 void rail_fence_decrypt_text(char* decrypted_text, char* encrytped_text);
 void clean_rail_fence_cipher();
 
+void break_caeser_cipher(char* encrypted_text);
 #endif

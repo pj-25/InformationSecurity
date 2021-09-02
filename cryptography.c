@@ -336,3 +336,17 @@ void clean_rail_fence_cipher(){
 	}
 	free(jumpValues);
 }
+
+
+//Cryptanalysis - Breaking caeser cipher using Brute Force 
+void break_caeser_cipher(char *encrypted_text){
+    printf("\nBreaking Caeser Cipher....\n");
+	int i, j, len = strlen(encrypted_text);
+	for(i=1;i<26;i++){
+		printf("Shift %d:: ", i);
+		for(j=0;j<len;j++){
+			printf("%c", decrypt_char_by_shift(encrypted_text[j], i));
+		}
+		printf("\n");
+	}
+}
