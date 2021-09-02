@@ -37,9 +37,9 @@ void run_cryptographic_algo(char* technique_name, void (*encryption_fptr)(char*,
     
     char* decrypted_text = (char*)malloc(sizeof(char)*(strlen(plain_text)+1));
     decryption_fptr(decrypted_text, encrypted_text);
+    printf("Plain Text: %s\nEncrypted Text: %s\n", plain_text, encrypted_text);
+    printf("Decrypted Text: %s\n", decrypted_text);
 	
-    printf("Plain Text: %s\nEncrypted Text: %s\nDecrypted Text: %s", plain_text, encrypted_text, decrypted_text);
-    
     free(encrypted_text);
     free(decrypted_text);	
 }
