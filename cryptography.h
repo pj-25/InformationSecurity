@@ -5,6 +5,7 @@
 #define MONOALPHABETIC 1
 #define POLYALPHABETIC 2
 #define PLAYFAIR 3
+#define RAIL_FENCE 4    
 
 #define CHAR_SHIFT_VALUE(c) (c >= 'a') ? 97 : 65
 #define CHAR_CODE(c) c - (CHAR_SHIFT_VALUE(c))
@@ -44,5 +45,10 @@ void playfair_cipher_decrypt_text(char* decrypted_text, char* encrypted_text);
 void clean_playfair_cipher();
 int prepare_text(char*, char*);
 void print_playfair_matrix();
+
+void init_rail_fence_cipher(int d);
+void rail_fence_encrypt_text(char* encrypted_text, char* plain_text);
+void rail_fence_decrypt_text(char* decrypted_text, char* encrytped_text);
+void clean_rail_fence_cipher();
 
 #endif

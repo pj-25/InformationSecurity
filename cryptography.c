@@ -32,12 +32,12 @@ void run_cryptographic_algo(char* technique_name, void (*encryption_fptr)(char*,
 	
     printf("Enter plain text: ");
     scanf("%[^\n]s", plain_text);
-    char* encrypted_text = (char*)malloc(sizeof(char)*strlen(plain_text));
+    char* encrypted_text = (char*)malloc(sizeof(char)*(strlen(plain_text)+1));
     encryption_fptr(encrypted_text, plain_text);
     
-    char* decrypted_text = (char*)malloc(sizeof(char)*strlen(plain_text));
+    char* decrypted_text = (char*)malloc(sizeof(char)*(strlen(plain_text)+1));
     decryption_fptr(decrypted_text, encrypted_text);
-    
+	
     printf("Plain Text: %s\nEncrypted Text: %s\nDecrypted Text: %s", plain_text, encrypted_text, decrypted_text);
     
     free(encrypted_text);
@@ -59,6 +59,9 @@ void run_cryptographic_algo_for(int algo_code){
 			break;
 		case PLAYFAIR:
 			run_cryptographic_algo("Playfair Cipher", &playfair_cipher_encrypt_text, &playfair_cipher_decrypt_text);
+			break;
+		case RAIL_FENCE:
+			run_cryptographic_algo("Rail Fence Cipher", &rail_fence_encrypt_text, &rail_fence_decrypt_text);
 			break;
 		}
 }
@@ -271,4 +274,65 @@ void playfair_cipher_decrypt_text(char* decrypted_text, char* encrypted_text){
 		}
 	}
 	decrypted_text[i] = '\0';
+}
+
+
+//Rail Fence
+int** jumpValues;
+int depth;
+
+void printJumpValues(){
+	int i;
+	for(i=0;i<depth;i++){
+		printf("%d, %d\n", jumpValues[i][0], jumpValues[i][1]);
+	}
+}
+
+void init_rail_fence_cipher(int d){
+	depth = d;
+	jumpValues = (int**)malloc(sizeof(int*)*depth);
+	int i;
+	for(i=0;i<depth;i++){
+		jumpValues[i] = (int*)malloc(sizeof(int)*2);
+	}
+	for(i=0;i<depth-1;i++){
+		jumpValues[i][0] = jumpValues[depth-i-1][1] = 2*(d-1);
+		d -= 1;
+	}
+	jumpValues[depth-1][0] = jumpValues[0][1] = jumpValues[0][0]; 
+	//printJumpValues();
+}
+
+void rail_fence_encrypt_text(char* encrypted_text, char* plain_text){
+	int i,j;
+	int len = strlen(plain_text), enclen=0;
+	for(i=0; i<depth; i++){
+		int choice = 1;
+		for(j=i; j < len; j += jumpValues[i][choice]){
+			encrypted_text[enclen++] = plain_text[j];
+			choice = (choice+1)%2;
+		}
+	}
+	encrypted_text[enclen] = '\0';
+}
+
+void rail_fence_decrypt_text(char* decrypted_text, char* encrypted_text){
+	int i,j;
+	int len = strlen(encrypted_text), enclen=0;
+	for(i=0;i<depth;i++){
+		int choice = 1;
+		for(j=i; j<len; j+=jumpValues[i][choice]){
+			decrypted_text[j] = encrypted_text[enclen++];
+			choice = (choice+1)%2;
+		}
+	}
+	decrypted_text[len] = '\0';
+}
+
+void clean_rail_fence_cipher(){
+	int i;
+	for(i=0;i<depth;i++){
+		free(jumpValues[i]);
+	}
+	free(jumpValues);
 }
